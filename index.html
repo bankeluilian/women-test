@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>女作家人格测试 - 寻访你的文学灵魂</title>
+  <meta name="description" content="基于文学审美与心理学四大维度，18道专业测试题，找出潜藏在你体内的文学化身。" />
+  <meta property="og:title" content="女作家人格测试 — 寻访你的文学灵魂" />
+  <meta property="og:description" content="你的笔触，出卖了你的灵魂。" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=LXGW+WenKai:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===== 变量 ===== */
+    :root {
+      --bg: #f5f1ea;
+      --bg-warm: #ede8df;
+      --bg-track: #e8e2d8;
+      --title: #2c2416;
+      --body: #4a4035;
+      --body-light: #7a7062;
+      --subtitle: #8b7e6e;
+      --accent: #8b6914;
+      --accent-light: #c4a54a;
+      --ornament: #b8a88a;
+      --border-light: #e0d8cc;
+      --radius: 0.625rem;
+    }
+
+    /* ===== 重置 ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+    body {
+      background-color: var(--bg);
+      color: var(--body);
+      font-family: 'LXGW WenKai', 'Noto Serif SC', 'Songti SC', Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+    button { border: none; outline: none; font-family: inherit; cursor: pointer; }
+    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+    /* ===== 滚动条 ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--ornament); border-radius: 3px; opacity: 0.4; }
+    ::-webkit-scrollbar-thumb:hover { opacity: 0.7; }
+    ::selection { background-color: rgba(139,105,20,0.2); color: var(--title); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ===== 纸纹理背景 ===== */
+    .paper-bg {
+      position: fixed; inset: 0; z-index: 0; opacity: 0.025; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b7355' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    @media (max-width: 640px) { .paper-bg { display: none; } }
+
+    /* ===== 浮动粒子 ===== */
+    .particle {
+      position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+      background-color: rgba(139,115,85,0.25);
+    }
+    @media (max-width: 640px) { .particle { display: none; } }
+
+    /* ===== 主容器 ===== */
+    .container {
+      position: relative; z-index: 1; max-width: 42rem; margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* ===== 分割线 ===== */
+    .divider {
+      display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+      margin: 1rem 0; opacity: 0.3;
+    }
+    .divider-line { flex: 0 0 3rem; height: 1px; background: var(--ornament); }
+    .divider svg { width: 14px; height: 14px; color: var(--ornament); }
+
+    /* ===== 屏幕通用 ===== */
+    .screen {
+      display: none;
+      padding: 2rem 1rem 3rem;
+      animation: fadeSlideIn 0.45s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeSlideOut {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-12px); }
+    }
+    @keyframes optionIn {
+      from { opacity: 0; transform: translateX(-16px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ===== 翻书动画 ===== */
+    .book-wrap {
+      perspective: 1200px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .book {
+      position: relative;
+      width: 64px; height: 88px;
+      transform-style: preserve-3d;
+    }
+    .book-cover {
+      position: absolute; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #c8b89a, #a08c6e);
+      border-radius: 3px 6px 6px 3px;
+      box-shadow: 2px 4px 14px rgba(90,70,50,0.35), inset -1px 0 0 rgba(0,0,0,0.15);
+      transform-origin: left center;
+      z-index: 2;
+    }
+    .book-cover::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 6px; bottom: 6px;
+      width: 3px;
+      background: rgba(0,0,0,0.12);
+      border-radius: 0 2px 2px 0;
+    }
+    /* 书脊 */
+    .book-spine {
+      position: absolute; left: 0; top: 0;
+      width: 10px; height: 100%;
+      background: linear-gradient(90deg, #9a8060, #b8a080);
+      border-radius: 3px 0 0 3px;
+      transform-origin: right center;
+      z-index: 1;
+    }
+    /* 翻动的页 */
+    .book-page {
+      position: absolute; right: 6px; top: 4px;
+      width: calc(100% - 10px); height: calc(100% - 8px);
+      background: linear-gradient(90deg, #f5f0e6, #ece6d8);
+      border-radius: 0 4px 4px 0;
+      box-shadow: inset 1px 0 2px rgba(0,0,0,0.08);
+      transform-origin: left center;
+      z-index: 1;
+    }
+    /* 页翻转动画 */
+    .page-flip {
+      animation: pageFlip 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    @keyframes pageFlip {
+      0%   { transform: rotateY(0deg); z-index: 3; }
+      35%  { transform: rotateY(-160deg); z-index: 3; }
+      36%  { z-index: 1; }
+      100% { transform: rotateY(-180deg); z-index: 1; }
+    }
+    /* 页面堆积效果 */
+    .page-stack {
+      position: absolute; right: 6px; top: 4px;
+      width: calc(100% - 10px); height: calc(100% - 8px);
+      background: #f0ead8;
+      border-radius: 0 4px 4px 0;
+      z-index: 0;
+    }
+    .page-stack:nth-child(2) { transform: translateZ(-2px); }
+    .page-stack:nth-child(3) { transform: translateZ(-4px); }
+    .page-stack:nth-child(4) { transform: translateZ(-6px); }
+
+    /* 翻页计数器文字 */
+    .page-counter {
+      font-size: 0.75rem; color: var(--body-light);
+      letter-spacing: 0.15em; margin-top: 0.75rem;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    /* ===== 欢迎页 ===== */
+    #welcome-screen {
+      min-height: 100dvh; justify-content: center; text-align: center;
+      padding-top: 3rem; padding-bottom: 3rem;
+    }
+    .icon-circle {
+      width: 5rem; height: 5rem; border-radius: 50%;
+      background: linear-gradient(135deg, #d4c4a8, #a08c6e);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(160,140,110,0.2);
+      animation: iconIn 0.6s cubic-bezier(0.22,1,0.36,1) 0.1s both;
+    }
+    @keyframes iconIn {
+      from { transform: scale(0) rotate(-180deg); opacity: 0; }
+      to   { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    .icon-circle svg { width: 2.25rem; height: 2.25rem; color: white; }
+    .main-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 2rem; font-weight: 300;
+      letter-spacing: 0.12em; color: var(--title);
+      margin-bottom: 0.5rem;
+    }
+    .main-subtitle {
+      font-size: 0.875rem; color: var(--subtitle);
+      letter-spacing: 0.25em; margin-bottom: 1rem;
+    }
+    .intro-text {
+      font-size: 0.9rem; line-height: 1.8; color: var(--body);
+      max-width: 20rem; margin: 0 auto 1.25rem;
+    }
+    .intro-meta {
+      font-size: 0.75rem; color: var(--body-light); margin-bottom: 0.5rem;
+    }
+
+    /* ===== 维度卡片 ===== */
+    .dim-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+      width: 100%; max-width: 20rem; margin-bottom: 2rem;
+    }
+    .dim-card {
+      background: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light);
+      border-radius: 0.75rem; padding: 0.75rem 0.5rem;
+      text-align: center;
+    }
+    .dim-labels { display: flex; align-items: center; justify-content: center; gap: 0.25rem; margin-bottom: 0.25rem; }
+    .dim-tag {
+      font-size: 0.7rem; font-weight: 500;
+      padding: 0.125rem 0.5rem; border-radius: 999px;
+      background: var(--bg-warm); color: var(--accent);
+    }
+    .dim-vs { font-size: 0.625rem; color: var(--body-light); }
+    .dim-names { font-size: 0.7rem; color: var(--body-light); line-height: 1.4; }
+
+    /* ===== 按钮 ===== */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.75rem 1.5rem; border-radius: 999px;
+      font-size: 0.875rem; font-weight: 500; letter-spacing: 0.15em;
+      color: white; background: #2c2416;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transition: box-shadow 0.15s;
+    }
+    .btn-primary:active { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .btn-primary svg { width: 1rem; height: 1rem; }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.625rem 1.25rem; border-radius: 999px;
+      font-size: 0.8rem; letter-spacing: 0.1em;
+      border: 1px solid var(--border-light); color: var(--body);
+      background: transparent; transition: background 0.15s;
+    }
+    .btn-outline:active { background: rgba(255,255,255,0.8); }
+    .btn-share {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.625rem 1.25rem; border-radius: 999px;
+      font-size: 0.8rem; letter-spacing: 0.1em;
+      color: white; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      transition: box-shadow 0.15s;
+    }
+    .btn-share:active { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .btn-share svg { width: 0.875rem; height: 0.875rem; }
+
+    /* ===== 答题页 ===== */
+    #quiz-screen { min-height: 100dvh; padding-top: 1.5rem; padding-bottom: 1.5rem; }
+    .progress-bar-wrap { width: 100%; max-width: 36rem; margin: 0 auto 1.5rem; }
+    .progress-top {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .progress-count { font-size: 0.7rem; color: var(--body-light); font-weight: 500; }
+    .progress-dim { font-size: 0.7rem; color: var(--subtitle); }
+    .progress-track {
+      width: 100%; height: 5px; background: var(--bg-track);
+      border-radius: 999px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      transition: width 0.4s ease-out;
+    }
+    .question-card {
+      width: 100%; max-width: 36rem; margin: 0 auto 1rem;
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light); border-radius: 1.25rem;
+      padding: 1.25rem 1.5rem;
+    }
+    .question-text {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1rem; line-height: 1.75; color: var(--title); font-weight: 300;
+    }
+    .options-list { width: 100%; max-width: 36rem; margin: 0 auto; display: flex; flex-direction: column; gap: 0.5rem; }
+    .option-btn {
+      width: 100%; text-align: left;
+      background: rgba(255,255,255,0.65); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light); border-radius: 0.875rem;
+      padding: 0.875rem 1rem;
+      display: flex; align-items: flex-start; gap: 0.75rem;
+      transition: background 0.15s;
+      animation: optionIn 0.3s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .option-btn:hover { background: rgba(237,232,223,0.9); }
+    .option-btn:active { transform: scale(0.98); }
+    .option-letter {
+      flex-shrink: 0; width: 1.75rem; height: 1.75rem;
+      border-radius: 50%; background: var(--bg-warm); color: var(--accent);
+      font-size: 0.7rem; font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+    .option-text { font-size: 0.875rem; line-height: 1.65; color: var(--body); }
+
+    /* ===== 计算过渡页 ===== */
+    #calc-screen { min-height: 70dvh; justify-content: center; text-align: center; }
+    .calc-icon { margin-bottom: 1rem; animation: rotate360 2.5s linear infinite; }
+    .calc-icon svg { width: 2.25rem; height: 2.25rem; color: var(--accent); opacity: 0.4; }
+    .calc-text {
+      font-size: 0.8rem; color: var(--body-light);
+      letter-spacing: 0.3em; animation: pulse 2.2s ease-in-out infinite;
+    }
+
+    /* ===== 翻书过渡 overlay ===== */
+    #book-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    #book-overlay.active { display: flex; }
+
+    /* ===== 结果页 ===== */
+    #result-screen { padding-left: 0.5rem; padding-right: 0.5rem; }
+    .result-inner { max-width: 36rem; margin: 0 auto; }
+    .result-header { text-align: center; margin-top: 1.5rem; margin-bottom: 1rem; }
+    .avatar {
+      width: 8rem; height: 8rem; border-radius: 50%; margin: 0 auto 1.25rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; font-family: 'Noto Serif SC', serif;
+      font-size: 2.5rem; font-weight: 300;
+      border: 3px solid; position: relative; overflow: hidden;
+    }
+    .avatar-init { line-height: 1; }
+    .avatar-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; }
+    .avatar-placeholder svg { width: 2rem; height: 2rem; opacity: 0.4; }
+    .avatar-placeholder span { font-size: 0.625rem; opacity: 0.4; }
+    .avatar-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: none; }
+    .avatar-img.show { display: block; }
+    .result-name {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 1.75rem; font-weight: 300;
+      letter-spacing: 0.1em; margin-bottom: 0.25rem;
+    }
+    .result-meta { font-size: 0.75rem; color: var(--body-light); letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+    .result-works { font-size: 0.7rem; color: var(--body-light); letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+    .result-badge {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.25rem 1rem; border-radius: 999px;
+      font-size: 0.8rem; border: 1px solid;
+    }
+    .result-badge svg { width: 0.75rem; height: 0.75rem; }
+
+    /* ===== 结果卡片 ===== */
+    .result-card {
+      background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light); border-radius: 1.25rem;
+      padding: 1.25rem 1.5rem; margin-bottom: 0.75rem;
+    }
+    .result-card-title {
+      font-family: 'Noto Serif SC', serif;
+      font-size: 0.875rem; color: var(--title);
+      padding-bottom: 0.625rem; margin-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-light);
+      letter-spacing: 0.12em;
+    }
+    .result-card-body { font-size: 0.875rem; line-height: 1.9; color: var(--body-light); }
+
+    /* ===== 光谱 ===== */
+    .spectrum-bar-wrap { margin-bottom: 0.75rem; }
+    .spectrum-labels { display: flex; justify-content: space-between; margin-bottom: 0.25rem; }
+    .spectrum-label { font-size: 0.7rem; color: var(--body-light); }
+    .spectrum-bar { display: flex; height: 6px; border-radius: 999px; overflow: hidden; background: var(--bg-warm); }
+    .spectrum-fill-left { height: 100%; border-radius: 999px 0 0 999px; transition: width 0.7s ease-out; }
+    .spectrum-fill-right { height: 100%; border-radius: 0 999px 999px 0; transition: width 0.7s ease-out; }
+    .spectrum-divider { width: 1px; background: rgba(255,255,255,0.8); }
+
+    /* ===== 标签 ===== */
+    .tags-row {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.375rem;
+      margin-top: 1rem; padding-top: 1rem;
+      border-top: 1px solid var(--border-light);
+    }
+    .tag {
+      font-size: 0.7rem; padding: 0.2rem 0.75rem;
+      border-radius: 999px; border: 1px solid;
+    }
+
+    /* ===== 名言 ===== */
+    .quote-card {
+      position: relative; border-radius: 1.25rem;
+      padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; overflow: hidden;
+      border-left: 3px solid;
+    }
+    .quote-mark {
+      position: absolute; top: -0.5rem; left: 0.75rem;
+      font-size: 4rem; opacity: 0.1; font-family: Georgia, serif;
+      line-height: 1; pointer-events: none;
+    }
+    .quote-text {
+      position: relative; z-index: 1;
+      font-family: 'Noto Serif SC', Georgia, serif;
+      font-size: 0.9rem; line-height: 1.85; font-style: italic; color: var(--body);
+      padding-left: 1.25rem;
+    }
+    .quote-author { position: relative; z-index: 1; text-align: right; font-size: 0.7rem; color: var(--body-light); margin-top: 0.5rem; padding-right: 0.25rem; }
+
+    /* ===== 结果按钮 ===== */
+    .result-actions { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .share-toast {
+      text-align: center; font-size: 0.7rem; color: var(--accent);
+      margin-top: 0.75rem; letter-spacing: 0.1em;
+      animation: fadeSlideIn 0.3s ease;
+    }
+
+    /* ===== 工具 ===== */
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .main-title { font-size: 1.65rem; }
+      .question-card { padding: 1rem 1.25rem; }
+      .question-text { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="paper-bg"></div>
+
+<!-- 浮动粒子 -->
+<div id="particles"></div>
+
+<div class="container">
+  <!-- ===== 欢迎页 ===== -->
+  <div id="welcome-screen" class="screen active">
+    <div class="icon-circle">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    </div>
+    <h1 class="main-title">女作家人格测试</h1>
+    <p class="main-subtitle">寻访你心底的文学灵魂</p>
+    <div class="divider">
+      <div class="divider-line"></div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+      <div class="divider-line"></div>
+    </div>
+    <p class="intro-text">
+      每个人心中都住着一位作家。<br/>
+      她替你感受世界，替你说出那些未能出口的话。
+    </p>
+    <p class="intro-meta">18 道题 · 4 个选项 · 四大维度</p>
+
+    <div class="dim-grid" id="dim-grid"></div>
+
+    <button class="btn-primary" onclick="startQuiz()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+      启程
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </button>
+  </div>
+
+  <!-- ===== 答题页 ===== -->
+  <div id="quiz-screen" class="screen">
+    <div class="progress-bar-wrap">
+      <div class="progress-top">
+        <span class="progress-count" id="q-count">1 / 18</span>
+        <span class="progress-dim" id="q-dim"></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="question-card">
+      <p class="question-text" id="q-text"></p>
+    </div>
+    <div class="options-list" id="options-list"></div>
+  </div>
+
+  <!-- ===== 计算过渡页 ===== -->
+  <div id="calc-screen" class="screen">
+    <div class="calc-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    </div>
+    <p class="calc-text">正在翻阅你的灵魂之书</p>
+  </div>
+
+  <!-- ===== 翻书过渡 overlay ===== -->
+  <div id="book-overlay">
+    <div class="book-wrap">
+      <div class="book">
+        <div class="book-spine"></div>
+        <div class="page-stack"></div>
+        <div class="page-stack"></div>
+        <div class="page-stack"></div>
+        <div class="book-page" id="flipping-page"></div>
+        <div class="book-cover"></div>
+      </div>
+    </div>
+    <p class="page-counter" id="book-counter">正在翻阅第 18 页</p>
+  </div>
+
+  <!-- ===== 结果页 ===== -->
+  <div id="result-screen" class="screen">
+    <div class="result-inner" id="result-inner"></div>
+  </div>
+</div>
+
+<script>
+// ===== 数据 =====
+const questions = [
+  { dimension:['I','E'], question:"当你提笔，灵感最初是从何处苏醒的？", options:[
+    {text:"心底某处幽暗的角落骤然被光照亮——那种震颤无法言说", trait:'I',weight:2},
+    {text:"一段尘封的旧事被什么轻轻叩醒，历历如绘", trait:'I',weight:1},
+    {text:"咖啡馆邻座一段破碎的对话，像石子投入静水", trait:'E',weight:1},
+    {text:"某个社交场合令人窒息的瞬间——我必须立刻将它捉住", trait:'E',weight:2},
+  ]},
+  { dimension:['I','E'], question:"若\"孤独\"可以被描摹，它更像——", options:[
+    {text:"一座唯有我知晓入口的秘密花园，尘世的风吹不进去", trait:'I',weight:2},
+    {text:"冬夜窗前的一盏孤灯——清冷，却并不让人惧怕", trait:'I',weight:1},
+    {text:"人海中央的一次溺水——四周喧嚣，无人回望", trait:'E',weight:1},
+    {text:"四壁缓缓逼近的窒息——我必须让谁听见我的呼救", trait:'E',weight:2},
+  ]},
+  { dimension:['I','E'], question:"若要写一场雨，你笔下最先浮现的是——", options:[
+    {text:"雨痕沿玻璃蜿蜒而下，将窗外老槐的轮廓一点点抹淡", trait:'I',weight:2},
+    {text:"一个人立于路口，伞垂落身侧，久久未曾迈步", trait:'I',weight:1},
+    {text:"菜市口被阵雨冲散的人潮——有人在抢收青菜，有人在骂天", trait:'E',weight:1},
+    {text:"雨后巷弄里骤然升腾的烟火气——油香与孩童的笑声一同涌来", trait:'E',weight:2},
+  ]},
+  { dimension:['I','E'], question:"生活骤然倾覆，你本能的第一反应是——", options:[
+    {text:"将自己封存于斗室，断绝一切联络，独自消化那重量", trait:'I',weight:2},
+    {text:"先静默，等风浪自行沉淀，再寻一个值得信任的人倾诉", trait:'I',weight:1},
+    {text:"即刻拨通某人的电话——我需要一端沉默而温暖的声音", trait:'E',weight:1},
+    {text:"立刻行动，一边处理一边向世界宣告我的立场与决心", trait:'E',weight:2},
+  ]},
+  { dimension:['T','F'], question:"一本书能被称作\"伟大\"，你最看重的标准是——", options:[
+    {text:"对人性幽微处的洞察如手术刀般精准，结构严丝合缝", trait:'T',weight:2},
+    {text:"叙述冷静克制，字里行间却透出令人脊背发凉的深度", trait:'T',weight:1},
+    {text:"文字中涌动着足以淹没读者的情感浪潮", trait:'F',weight:1},
+    {text:"有些句子能穿透所有防线——每次重读，泪水依然滚落", trait:'F',weight:2},
+  ]},
+  { dimension:['T','F'], question:"描写一个人物的崩溃，你的笔更倾向于——", options:[
+    {text:"以极克制的白描勾勒——越冷静，实则越残忍，越有力", trait:'T',weight:2},
+    {text:"不动声色地记录每一个动作与细节，让事实替她说话", trait:'T',weight:1},
+    {text:"潜入她的身体内部，替她感受心脏被一寸寸碾碎的全程", trait:'F',weight:1},
+    {text:"倾尽所有——若读者未曾随之落泪，我便不曾写到位", trait:'F',weight:2},
+  ]},
+  { dimension:['T','F'], question:"在你心中，\"爱\"最接近于——", options:[
+    {text:"一场精密的博弈——每个人都在暗处计算着得失", trait:'T',weight:2},
+    {text:"两个独立灵魂之间深思熟虑的契约，需要耐心与智慧方能维系", trait:'T',weight:1},
+    {text:"一道劈开黑暗的闪电——你无法选择它何时降临，只能选择是否迎接", trait:'F',weight:1},
+    {text:"一场焚尽所有的野火——纵使只剩灰烬，也未曾后悔", trait:'F',weight:2},
+  ]},
+  { dimension:['T','F'], question:"遭受毫不留情的批评后，你内心最真实的独白是——", options:[
+    {text:"「先分辨论点是否站得住脚。无意义的反驳，连时间都不值。」", trait:'T',weight:2},
+    {text:"「冷静下来想想，有道理的便接纳，没道理的就放下。」", trait:'T',weight:1},
+    {text:"「嘴上说不计较，但那几字如碎玻璃，扎在胸口久久不出。」", trait:'F',weight:1},
+    {text:"「世界塌陷了一角。那种痛是生理性的，需好多天才能缓过来。」", trait:'F',weight:2},
+  ]},
+  { dimension:['T','F'], question:"若写作是一柄武器，你最渴望它刺向——", options:[
+    {text:"一切被精心粉饰的谎言与虚伪——令真相在光下无所遁形", trait:'T',weight:2},
+    {text:"社会运转中那些不公不义的暗角，迫使人们正视结构本身", trait:'T',weight:1},
+    {text:"人心底那些说不出口的孤独、渴望与柔软——让它们被看见", trait:'F',weight:1},
+    {text:"我自己——若不写，那些翻涌的情绪会将我从内部撕碎", trait:'F',weight:2},
+  ]},
+  { dimension:['S','N'], question:"你最想搭建一个怎样的故事舞台？", options:[
+    {text:"逼仄的出租屋、破碎的婚姻、一张即将到期的账单", trait:'S',weight:2},
+    {text:"以某个真实年代为布景，让普通人的命运被时代洪流裹挟", trait:'S',weight:1},
+    {text:"悬崖之上的一座图书馆，架上的书会自行翻页、低语", trait:'N',weight:1},
+    {text:"人类灭绝后的最后一个AI，在废墟中反复播放一首听不懂的歌", trait:'N',weight:2},
+  ]},
+  { dimension:['S','N'], question:"提及\"钱\"这个字，你脑海中掠过的第一幅画面是——", options:[
+    {text:"菜市场里讨价还价的妇女，手心里攥紧了零钞数了又数", trait:'S',weight:2},
+    {text:"一家人围坐桌前精打细算——它既不浪漫，也不羞耻", trait:'S',weight:1},
+    {text:"一叠被遗忘在抽屉深处的旧钞，已与某段往事粘连在一起", trait:'N',weight:1},
+    {text:"一个无足轻重的数字——我真正匮乏的，从不是它能买到的", trait:'N',weight:2},
+  ]},
+  { dimension:['S','N'], question:"你理想中的故事结局，应当——", options:[
+    {text:"如生活本身那般灰暗而无可挽回——妥协、遗忘、继续活着", trait:'S',weight:2},
+    {text:"苦涩中带一缕微温，不施舍廉价的圆满，也不剥夺最后的光", trait:'S',weight:1},
+    {text:"在极致的毁灭中迸发出摄人心魄的美——如烟花最后的绽放", trait:'N',weight:1},
+    {text:"归于静默——让一切消融在雾中，答案留给读它的人", trait:'N',weight:2},
+  ]},
+  { dimension:['S','N'], question:"关于\"女性\"这一身份，你最渴望书写的是——", options:[
+    {text:"婆媳之间的暗流、生育的代价、职场透明的天花板——真实的困兽之斗", trait:'S',weight:2},
+    {text:"在时代的缝隙中寻找自我，于规训与反叛之间反复摇摆", trait:'S',weight:1},
+    {text:"一个无需依附任何关系的独立灵魂——栖于星辰与深渊之间", trait:'N',weight:1},
+    {text:"性别本身即牢笼——我真正想问的是：一个人，为何存在", trait:'N',weight:2},
+  ]},
+  { dimension:['J','P'], question:"你对文字之美最深的追求，是——", options:[
+    {text:"如古典建筑般严谨而均衡——每个字各归其位，分毫不差", trait:'J',weight:2},
+    {text:"干净利落、澄澈通透——在传统框架内抵达极致", trait:'J',weight:1},
+    {text:"如一面碎裂的镜子——每一片都映出真实的不同切面", trait:'P',weight:1},
+    {text:"语法可以颠覆，句号可以缺席——语言本身即是一场风暴", trait:'P',weight:2},
+  ]},
+  { dimension:['J','P'], question:"面对社会公认的道德准则，你的立场更接近——", options:[
+    {text:"规则自有其存在的道理——最精彩的故事，往往发生在规则的边界", trait:'J',weight:2},
+    {text:"尊重但不盲从——真正的改变，是让旧系统自己生出新枝", trait:'J',weight:1},
+    {text:"这些\"理所当然\"最令我窒息——我的文字，本身就是一把锤子", trait:'P',weight:1},
+    {text:"每一条规则都值得被焚烧一次——唯有灰烬之中，新芽方才显现", trait:'P',weight:2},
+  ]},
+  { dimension:['J','P'], question:"若让你写一部自传，你会如何开篇？", options:[
+    {text:"「1975年冬，我生于南方小城一座砖瓦老屋。那年的雪，下了整整一月。」", trait:'J',weight:2},
+    {text:"「这故事，大约该从我七岁那年偷摘邻家的枣子说起……」", trait:'J',weight:1},
+    {text:"「我无法确定，自己究竟是从哪一天起，变成了如今的模样。」", trait:'P',weight:1},
+    {text:"「（此处原应有一段文字——但我决定，将它删去。）」", trait:'P',weight:2},
+  ]},
+  { dimension:['J','P'], question:"你推开一扇门，发现室内一切皆完美对称。你的第一冲动是——", options:[
+    {text:"静静坐下，享受这罕见的安宁——这世界太需要这样无瑕的角落了", trait:'J',weight:2},
+    {text:"感到舒适，但或许窗台上可以再添一盆花，让它更有人间烟火气", trait:'J',weight:1},
+    {text:"忍不住将一把椅子轻轻扭转——极致的对称令我感到不安", trait:'P',weight:1},
+    {text:"必须立刻打破什么——这种完美是谎言，是对活着本身的亵渎", trait:'P',weight:2},
+  ]},
+  { dimension:['J','P'], question:"你心目中足以\"改变文学史\"的作品，应当是——", options:[
+    {text:"在传统技法上登峰造极，后人用百年时光也难以企及", trait:'J',weight:2},
+    {text:"于经典之上向前迈出一小步——不大，却无可替代", trait:'J',weight:1},
+    {text:"初读时全然不知所云，三十年后，所有人才明白它颠覆了什么", trait:'P',weight:1},
+    {text:"它根本不像一本书——它更像一道伤口、一场震颤、一次越狱", trait:'P',weight:2},
+  ]},
+];
+
+// 作家图片映射（图片放于 image/ 目录）
+const writerImageMap = {
+  ITSJ: '简·奥斯汀.jpg',
+  IFNP: '弗吉尼亚·伍尔夫.jpg',
+  ITSP: '张爱玲.jpg',
+  EFNP: '玛格丽特·杜拉斯.jpg',
+  ITNJ: '厄休拉·勒古恩.jpg',
+  IFSP: '西尔维娅·普拉斯.jpg',
+  ETSJ: '阿加莎·克里斯蒂.jpg',
+  EFNJ: '三毛.jpg',
+};
+
+const writerResults = [
+  {code:"ITSJ",name:"简·奥斯汀",nameEn:"Jane Austen",era:"1775 – 1817",works:"《傲慢与偏见》《理智与情感》《爱玛》",title:"洞若观火的社交解剖师",tags:["内向","理性","现实","古典"],analysis:"你拥有一种罕见的天赋——于喧嚣人群中保持清醒的旁观。你不追求耸人听闻的戏剧性，而像一位坐在客厅角落的淑女，用半垂的眼帘不动声色地打量着每一个人。一次握手的力道、一句客套的破绽、一个舞步的犹豫——都在你眼底化为无声的注脚。你的智慧从不咄咄逼人，它藏在得体的微笑与优雅的措辞之间——正是这种恰到好处的分寸，让你的洞察比任何大声疾呼都更具穿透力。",style:"你笔下的世界精确到近乎冷酷，冷酷之下却藏着对人性的深深悲悯。你相信日常才是终极的战场——客厅里几句轻描淡写的对白，往往比战场上千军万马更能定义一个人的命运。你的文字节制而利落，如一盏恰好65°C的伯爵红茶，温热而不灼人，回味绵长。你从不刻意煽情，然而读者合上书的那一刻，往往久久凝视着空荡荡的天花板，发不出声音。",quote:"「凡是有钱的单身汉，总想娶位太太，这已经成了一条举世公认的真理。」",color:"#8b7355"},
+  {code:"IFNP",name:"弗吉尼亚·伍尔夫",nameEn:"Virginia Woolf",era:"1882 – 1941",works:"《达洛维夫人》《到灯塔去》《一间自己的房间》",title:"在意识的深海里独自泅渡",tags:["内向","感性","理想","先锋"],analysis:"你感知世界的方式与众人截然不同——当别人看见一棵树，你看见的却是它从种子到枯木的全部时间层层叠压。你的意识如同一片深海，表面波澜不惊，深处却暗流奔涌。你能在同一瞬间承接一千种情绪的共振，它们在你体内汇聚成一股无法用语言尽述的巨大回响。这种天赋令你既强大又脆弱：强大在于你能触及大多数人穷尽一生都无法抵达的精神深处，脆弱在于——你根本无处关闭这道闸门。你写作不是因为想要表达，而是因为不写出来，那些感知的洪流便会将你彻底淹没。",style:"你的文字是对线性叙事的一次温柔叛逃。你从不在意\"发生了什么\"，你在意的始终是\"在发生与发生的缝隙之间，一个人究竟经历了什么\"。一个角色去买花，她的一生便在你笔下随之涌来——童年的花园、破碎的婚姻、某个无法命名的下午。你用句子搭建的不是桥梁，而是由镜子碎片拼成的万花筒——每换一个角度，便映出真实的不同切面。",quote:"「一个人能使自己成为自己，比什么都重要。」",color:"#6b7c8e"},
+  {code:"ITSP",name:"张爱玲",nameEn:"Eileen Chang",era:"1920 – 1995",works:"《倾城之恋》《金锁记》《红玫瑰与白玫瑰》",title:"华丽袍子下看尽苍凉的旁观者",tags:["内向","理性","现实","先锋"],analysis:"你的眼睛仿佛一台精密的X光机。旁人看见的是华服与笑脸，你却穿透皮肉，望见骨骼与裂隙。你对所谓\"人性之美\"不抱任何虚幻的期待，但你亦非愤世嫉俗——你只是看得太过清楚。你耽于世俗的表面：旗袍上织锦的暗纹、牌桌间无声的算计、弄堂口流转的流言——因为你知道，人世间最惊心动魄的故事，从不在战场，而在那些密不透风的客厅深处。你的清醒有时近于残忍，然而恰恰是这残忍，赋予了文字穿越时代的力量。",style:"你的文字是一道颜色浓烈的伤口——华丽、锐利，带着隐约的血腥气。你将比喻运用到极致：\"生命是一袭华美的袍，爬满了蚤子。\"仅一个比喻，便能定义一个人的一生。你的先锋性不在于形式的颠覆，而在于你凝视世界的方式本身便是一种反叛——当所有人都在歌颂爱情，你却冷冷地写出了它真实的重量与价格。",quote:"「因为懂得，所以慈悲。」",color:"#8b2252"},
+  {code:"EFNP",name:"玛格丽特·杜拉斯",nameEn:"Marguerite Duras",era:"1914 – 1996",works:"《情人》《广岛之恋》《痛苦》",title:"在烈焰中焚烧自我的狂徒",tags:["外向","感性","理想","先锋"],analysis:"你不是在写作，你是在纵火——每一部作品都是你亲手点燃的一片热带雨林。你对\"适度\"这个词天生过敏：要么不爱，要么焚尽所有；要么沉默，要么嘶吼；要么活着，要么让文字替你将生命再活一遍。你的生命力是一柄双刃剑——它赋予你灼伤读者的能力，也令你在每一次燃烧之后只剩灰烬。然而你从未后悔。因为你深谙：真正活过的证明不是寿命的长短，而是你曾将自己燃烧到了怎样的程度。",style:"你的文字如同热带雨林——潮湿、浓密、令人窒息，且无法逃脱。同一个意象你会一写再写，几十遍，如潮汐般一波一波拍击着读者的皮肤，直到它渗入血液。你不在乎情节，不在乎逻辑，甚至不在乎标点符号本身。你只在乎一件事：这个句子，是否令你自己颤栗。如果答案是肯定的——它便留下来了。",quote:"「爱之于我，不是肌肤之亲，不是一蔬一饭。它是一种不死的欲望，是疲惫生活中的英雄梦想。」",color:"#b85c38"},
+  {code:"ITNJ",name:"厄休拉·勒古恩",nameEn:"Ursula K. Le Guin",era:"1929 – 2018",works:"《黑暗的左手》《地海传说》系列",title:"在星际间搭建思想实验室的造物者",tags:["内向","理性","理想","古典"],analysis:"你的思维尺度令大多数人感到陌生——当世人在小情小爱中徘徊时，你在思索的是文明的可能性、是性别的本质、是权力结构的底层密码。你不是激进的批判者，而是安静的造物者——你构建一整个世界，然后令其自行言说。你的思想之宽广令人惊叹：你同时理解秩序与自由、个体与集体、已知与未知。你是一位罕见的乐观主义者——不是因为世界本善，而是因为你相信想象本身拥有改变世界的力量。",style:"你的文字清澈如冰山下的湖水——表面平静得近乎冷酷，深处却蕴藏着整个宇宙。你构建的世界如此完整，以至于读者合上书后常会产生一种奇异的恍惚：仿佛那个世界真实存在于某个遥远的星球。你是思想的实验者，却从不将实验变成说教——故事永远是第一位的，而思考不过是故事自然流淌出来的余韵。",quote:"「真正的冒险不是去到远方，而是用全新的眼睛去看。」",color:"#4a6741"},
+  {code:"IFSP",name:"西尔维娅·普拉斯",nameEn:"Sylvia Plath",era:"1932 – 1963",works:"《钟形罩》《爱丽尔》",title:"用血与玻璃书写的自白者",tags:["内向","感性","现实","先锋"],analysis:"你的感知力如同一柄无鞘的利刃——世界轻轻触碰，你便渗出血来。落叶在耳中化作丧钟，路人的一个眼神足以令你彻夜难眠，而某句无意的话语或许会在你体内回响一生。这不是脆弱——这是一种远超常人的感受密度。你渴望完美，却时时感知着完美与现实之间那道巨大的裂缝，它令你痛苦，也令你成为诗人。你的文字之所以在半个世纪后仍能一击即中，是因为它们不是\"写\"出来的，而是从你的骨血中\"生长\"出来的。",style:"自白派不粉饰、不拐弯、不给自己留任何退路。你的比喻锋利到足以割破手指——\"感觉自己被困在钟形罩里，外面的世界嘶嘶作响，声音却无法传入。\"你从不写\"悲伤\"二字，你写悲伤的形状、颜色、温度与重量。你令读者不是\"理解\"你的痛苦，而是\"亲身经历\"它。这是最高级别的残忍，亦是最高级别的共情。",quote:"「我觉得自己非常无知，又非常有教养，非常安静，又非常疯狂。」",color:"#7b3f5e"},
+  {code:"ETSJ",name:"阿加莎·克里斯蒂",nameEn:"Agatha Christie",era:"1890 – 1976",works:"《无人生还》《东方快车谋杀案》《尼罗河上的惨案》",title:"掌控全局的幕后执棋人",tags:["外向","理性","现实","古典"],analysis:"你是天赋异禀的棋手——当众人仍被表象迷惑时，你已洞悉整盘棋局。你观察人的方式近乎本能：衣领上一道不经意的褶皱、回答时那多半拍的停顿、一个不合时宜的微笑——这些旁人眼中毫无意义的细节，在你脑海中自动拼合成一幅完整的图景。你享受掌控全局的感觉——并非出于权力欲，而是因为你热爱\"秩序\"本身。当世界陷入混乱，你是那个最冷静的人：因为你知道，只要足够耐心，真相终将自行浮出水面。",style:"你追求的从来不是文学的华丽，而是结构的精密——每一个伏笔恰到好处，每一个转折令人拍案叫绝。你写的不仅是推理小说，你写的是人性的标本室：每一位嫌疑人都是一种人性的可能性，而最终的真相往往令人豁然开朗——最不可能的人，才是是最接近真实的那一个。你的文字干净利落，从不浪费一个形容词——恰如你下棋，从不浪费一步。",quote:"「每个人都是嫌疑人，直到真相把他们从名单上划掉。」",color:"#6b5b4e"},
+  {code:"EFNJ",name:"三毛",nameEn:"Sanmao",era:"1943 – 1991",works:"《撒哈拉的故事》《梦里花落知多少》《雨季不再来》",title:"用双脚丈量自由边界的浪漫旅人",tags:["外向","感性","理想","古典"],analysis:"你活着的每一天都在向世界宣告：浪漫不是诗人的特权，而是每一个不愿被驯服之人的本能。你与\"按部就班\"这四个字天然为敌——日复一日走在同一条路上、遇见同一群面孔、重复同一段对话，在你而言比任何刑罚都更难忍受。你的共情能力令人惊叹——你能在沙漠深处与素昧平生的游牧民结为挚友，能在异国他乡被一个陌生孩子的微笑感动到落泪。你不是在逃避现实，你是在用更勇敢的方式去面对它：以身体去触碰世界的边界，以真诚去丈量人心的深度。",style:"你的文字是篝火旁的旅行札记——没有华丽的修辞，没有刻意的结构，只有一位旅人坐在火堆边，用全部的热情将远方的风沙与月光一一呈递给你。你的浪漫之所以动人，是因为它是真的——你真的走进了撒哈拉，你真的在那里许下了婚约，你真的在异乡度过了漫长而炽烈的一生。你不书写远方，你自身就是远方。每一篇文章都是你寄给读者的明信片，背面写着：\"此处甚美，你应当亲自来看看。\"",quote:"「一个人至少拥有一个梦想，有一个理由去坚强。心若没有栖息的地方，到哪里都是在流浪。」",color:"#c4956a"},
+];
+
+const dimensionInfo = [
+  {key:'IE',left:{letter:'I',label:'向内走'},right:{letter:'E',label:'向外走'}},
+  {key:'TF',left:{letter:'T',label:'理性之刃'},right:{letter:'F',label:'感性之火'}},
+  {key:'SN',left:{letter:'S',label:'大地的脚印'},right:{letter:'N',label:'星空的凝望'}},
+  {key:'JP',left:{letter:'J',label:'秩序之美'},right:{letter:'P',label:'混沌之美'}},
+];
+
+const TRAIT_LABELS = {I:'内向',E:'外向',T:'理性',F:'感性',S:'现实',N:'理想',J:'古典',P:'先锋'};
+const LETTERS = ['A','B','C','D'];
+
+// ===== 状态 =====
+let currentQ = 0;
+let scores = {I:0,E:0,T:0,F:0,S:0,N:0,J:0,P:0};
+let currentResult = null;
+
+// ===== 粒子 =====
+(function initParticles(){
+  const data = [
+    {id:0,s:3,x:12,y:20,d:14,dl:0,op:0.08},
+    {id:1,s:5,x:85,y:15,d:11,dl:2,op:0.06},
+    {id:2,s:2,x:45,y:70,d:16,dl:4,op:0.10},
+    {id:3,s:4,x:70,y:45,d:13,dl:1,op:0.07},
+    {id:4,s:3,x:25,y:85,d:15,dl:3,op:0.05},
+    {id:5,s:6,x:90,y:75,d:12,dl:5,op:0.04},
+    {id:6,s:2,x:55,y:10,d:17,dl:2.5,op:0.09},
+    {id:7,s:4,x:8,y:55,d:10,dl:1.5,op:0.06},
+    {id:8,s:3,x:78,y:92,d:14,dl:3.5,op:0.05},
+    {id:9,s:5,x:35,y:35,d:11,dl:0.5,op:0.07},
+  ];
+  const container = document.getElementById('particles');
+  data.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'particle';
+    el.style.cssText = `width:${p.s}px;height:${p.s}px;left:${p.x}%;top:${p.y}%;opacity:${p.op};`;
+    container.appendChild(el);
+    animateParticle(el, p);
+  });
+})();
+
+function animateParticle(el, p) {
+  let t = 0;
+  function step() {
+    t += 0.016;
+    const y = Math.sin(t * 0.5 + p.dl) * 20;
+    const x = Math.cos(t * 0.4 + p.dl) * 12;
+    el.style.transform = `translate(${x}px,${y - 10}px)`;
+    requestAnimationFrame(step);
+  }
+  setTimeout(() => requestAnimationFrame(step), p.dl * 1000);
+}
+
+// ===== 维度卡片 =====
+(function buildDimGrid(){
+  const grid = document.getElementById('dim-grid');
+  dimensionInfo.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'dim-card';
+    card.innerHTML = `
+      <div class="dim-labels">
+        <span class="dim-tag">${d.left.letter}</span>
+        <span class="dim-vs">vs</span>
+        <span class="dim-tag">${d.right.letter}</span>
+      </div>
+      <div class="dim-names">${d.left.label} / ${d.right.label}</div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ===== 屏幕切换 =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== 渲染题目 =====
+function renderQuestion() {
+  const q = questions[currentQ];
+  const progress = ((currentQ + 1) / questions.length) * 100;
+  const dim = dimensionInfo.find(d => d.key === q.dimension[0] + q.dimension[1]);
+
+  document.getElementById('q-count').textContent = `${currentQ + 1} / ${questions.length}`;
+  document.getElementById('q-dim').textContent = dim ? `${dim.left.letter} · ${dim.right.letter}` : '';
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('q-text').textContent = q.question;
+
+  const list = document.getElementById('options-list');
+  list.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.style.animationDelay = (i * 0.06) + 's';
+    btn.innerHTML = `
+      <span class="option-letter">${LETTERS[i]}</span>
+      <span class="option-text">${opt.text}</span>
+    `;
+    btn.addEventListener('click', () => handleAnswer(opt.trait, opt.weight));
+    list.appendChild(btn);
+  });
+}
+
+// ===== 答题 =====
+function handleAnswer(trait, weight) {
+  scores[trait] += weight;
+  if (currentQ + 1 >= questions.length) {
+    // 最后一题 → 翻书过渡动画
+    triggerBookFlip();
+  } else {
+    currentQ++;
+    renderQuestion();
+  }
+}
+
+// ===== 翻书动画 =====
+function triggerBookFlip() {
+  const overlay = document.getElementById('book-overlay');
+  const page = document.getElementById('flipping-page');
+  const counter = document.getElementById('book-counter');
+
+  overlay.classList.add('active');
+
+  // 重置动画
+  page.classList.remove('page-flip');
+  void page.offsetWidth; // force reflow
+  page.classList.add('page-flip');
+
+  // 计数器文字
+  let count = questions.length;
+  counter.textContent = `正在翻阅第 ${count} 页`;
+
+  // 动画结束后显示结果
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    page.classList.remove('page-flip');
+    showResult();
+  }, 2000);
+}
+
+// ===== 结果 =====
+function calculateResult() {
+  const code =
+    (scores.I >= scores.E ? 'I' : 'E') +
+    (scores.T > scores.F ? 'T' : 'F') +
+    (scores.S > scores.N ? 'S' : 'N') +
+    (scores.J > scores.P ? 'J' : 'P');
+
+  let best = writerResults[0], bestMatch = -1;
+  for (const w of writerResults) {
+    let m = 0;
+    for (let i = 0; i < 4; i++) if (w.code[i] === code[i]) m++;
+    if (m > bestMatch) { bestMatch = m; best = w; }
+  }
+  return best;
+}
+
+function spectrumData(result) {
+  const pairs = [['I','E'],['T','F'],['S','N'],['J','P']];
+  return pairs.map(([l,r]) => {
+    const maxL = questions.filter(q => q.dimension.includes(l))
+      .reduce((s,q) => s + q.options.filter(o=>o.trait===l).reduce((ss,o)=>ss+o.weight,0), 0);
+    const maxR = questions.filter(q => q.dimension.includes(r))
+      .reduce((s,q) => s + q.options.filter(o=>o.trait===r).reduce((ss,o)=>ss+o.weight,0), 0);
+    const total = Math.max(maxL + maxR, 1);
+    return {
+      left: { trait:l, label:TRAIT_LABELS[l] },
+      right: { trait:r, label:TRAIT_LABELS[r] },
+      leftPct: (scores[l]/total)*100,
+      rightPct: (scores[r]/total)*100,
+    };
+  });
+}
+
+function showResult() {
+  const result = calculateResult();
+  currentResult = result;
+  const spec = spectrumData(result);
+  const c = result.color;
+
+  const inner = document.getElementById('result-inner');
+  inner.innerHTML = `
+    <div class="result-header">
+      <div class="avatar" style="background:linear-gradient(145deg,${c}18,${c}38);border-color:${c}40;color:${c};">
+        <img class="avatar-img" id="avatar-img" src="image/${writerImageMap[result.code]}" alt="${result.name}" onerror="this.classList.remove('show');this.nextElementSibling.style.display='flex'" onload="this.classList.add('show')">
+        <div class="avatar-placeholder" style="display:flex;">
+          <span class="avatar-init">${result.name.charAt(0)}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>作家照片</span>
+        </div>
+      </div>
+      <h2 class="result-name" style="color:${c};">${result.name}</h2>
+      <p class="result-meta">${result.nameEn} &middot; ${result.era}</p>
+      <p class="result-works">${result.works}</p>
+      <div class="result-badge" style="background:${c}12;color:${c};border-color:${c}22;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        ${result.title}
+      </div>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="result-card">
+      <div class="spectrum-labels" style="margin-bottom:0.5rem;">
+        <span class="spectrum-label">内向</span>
+        <span class="spectrum-label">外向</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        ${spec.map((d,idx) => `
+          <div class="spectrum-bar-wrap">
+            <div class="spectrum-labels">
+              <span class="spectrum-label" style="color:${result.tags.includes(d.left.label)?c:undefined}">${d.left.label} ${d.leftPct.toFixed(0)}%</span>
+              <span class="spectrum-label" style="color:${result.tags.includes(d.right.label)?c:undefined}">${d.rightPct.toFixed(0)}% ${d.right.label}</span>
+            </div>
+            <div class="spectrum-bar">
+              <div class="spectrum-fill-left" style="width:${d.leftPct}%;background:${result.tags.includes(d.left.label)?c:c+'80'};"></div>
+              <div class="spectrum-divider"></div>
+              <div class="spectrum-fill-right" style="width:${d.rightPct}%;background:${result.tags.includes(d.right.label)?c:c+'80'};"></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <div class="tags-row">
+        ${result.tags.map(t => `<span class="tag" style="color:${c};background:${c}10;border-color:${c}25;">${t}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">人格解析</div>
+      <div class="result-card-body">${result.analysis}</div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-card-title">她的笔触</div>
+      <div class="result-card-body">${result.style}</div>
+    </div>
+
+    <div class="quote-card" style="background:${c}06;border-left-color:${c};">
+      <span class="quote-mark" style="color:${c};">&#8220;</span>
+      <p class="quote-text">${result.quote}</p>
+      <p class="quote-author">—— ${result.name}</p>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn-outline" onclick="restart()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+        再次出发
+      </button>
+      <button class="btn-share" style="background:${c};" onclick="share()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        传递这枚灵魂的碎片
+      </button>
+    </div>
+    <div id="share-toast" class="share-toast" style="display:none;">已收入你的行囊</div>
+  `;
+
+  showScreen('result-screen');
+}
+
+// ===== 分享 =====
+async function share() {
+  const r = currentResult;
+  const text = `我在「女作家人格测试」中邂逅了 ${r.name}（${r.nameEn}）—— ${r.title}\n\n「${r.quote}」`;
+  const toast = document.getElementById('share-toast');
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: '女作家人格测试 — 寻访你的文学灵魂', text });
+    } catch(e) {}
+  } else {
+    await navigator.clipboard.writeText(text);
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 2500);
+  }
+}
+
+// ===== 重启 =====
+function restart() {
+  currentQ = 0;
+  scores = {I:0,E:0,T:0,F:0,S:0,N:0,J:0,P:0};
+  currentResult = null;
+  showScreen('welcome-screen');
+}
+
+// ===== 开始 =====
+function startQuiz() {
+  currentQ = 0;
+  scores = {I:0,E:0,T:0,F:0,S:0,N:0,J:0,P:0};
+  renderQuestion();
+  showScreen('quiz-screen');
+}
+</script>
+</body>
+</html>
