@@ -839,13 +839,8 @@ function showResult() {
   inner.innerHTML = `
     <div class="result-header">
       <div class="avatar" style="background:linear-gradient(145deg,${c}18,${c}38);border-color:${c}40;color:${c};">
-        <img class="avatar-img" id="avatar-img" src="image/${writerImageMap[result.code]}" alt="${result.name}" onerror="this.classList.remove('show');this.nextElementSibling.style.display='flex'" onload="this.classList.add('show')">
-        <div class="avatar-placeholder" style="display:flex;">
-          <span class="avatar-init">${result.name.charAt(0)}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span>作家照片</span>
+        <img class="avatar-img show" id="avatar-img" src="image/${writerImageMap[result.code]}" alt="${result.name}" onerror="this.style.display='none'">
         </div>
-      </div>
       <h2 class="result-name" style="color:${c};">${result.name}</h2>
       <p class="result-meta">${result.nameEn} &middot; ${result.era}</p>
       <p class="result-works">${result.works}</p>
